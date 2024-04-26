@@ -1,5 +1,6 @@
 package com.code.socialbook.backendapi.exceptionHandler;
 
+import io.jsonwebtoken.ExpiredJwtException;
 import jakarta.mail.MessagingException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -66,6 +67,15 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(BAD_REQUEST)
                 .body(ExceptionResponse.builder()
                         .validationErrors(errors)
+                        .build());
+    }
+
+    @ExceptionHandler({ExpiredJwtException.class, })
+    public ResponseEntity<ExceptionResponse> handleException(ExpiredJwtException exp){
+        return ResponseEntity.status(UNAUTHORIZED)
+                .body(ExceptionResponse.builder()
+                        .businessExceptionDescription("Expired JWT token")
+                        .error(exp.getMessage())
                         .build());
     }
 
