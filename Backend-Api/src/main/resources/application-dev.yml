@@ -1,0 +1,38 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5433/book_social_network
+    username: username
+    password: password
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+    database: postgresql
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+  mail:
+    host: localhost
+    port: 1025
+    username: yves
+    password: yves
+    properties:
+      mail:
+        smtp:
+          trust: "*"
+        auth: true
+        starttls:
+          enable: true
+        connectiontimeout: 5000
+        timeout: 3000
+        writetimeout: 5000
+application:
+  security:
+    jwt:
+      secret-key: BWgwvfUQbvfyhCHdIlcrFDn8/dAlonrY+Kj+DJ8mhSkkFl2v+XDv/M1KK9jWO+Bi0PF88wwTmkciUO3x7/d9Mqo/lv+5qk/Fz/YM97ylIEXhAz/e/1iPC95+f3UoyiIxTYf5z2vRfKu6twhjUwMZ+9eKiLfxqkHpOqAmWZhPSr2TRL+V91I303uyoYy7cU8LiX0LVkvXvTDX4vS7wdvGPvLIUxBzC1I/Ko6n+5oHNZm+bQhoph0SEHP8ne9n6EZQ8/sMJNs8wLX7qyuanD8KhkAnn+vFTu4PTzNnV+JwUGN1L87qRiZ7CIoNwasazvgu0rvFZH5g3Hx2kVRM82zznCmbWgYdCCR0vpR1Ourj23M=
+      expiration: 86400000
+  mailing:
+    fronted:
+      activation-url: http://localhost:4200/activation-account
