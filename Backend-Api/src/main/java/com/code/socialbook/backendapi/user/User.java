@@ -1,5 +1,7 @@
 package com.code.socialbook.backendapi.user;
 
+import com.code.socialbook.backendapi.book.Book_model;
+import com.code.socialbook.backendapi.history.BookTransactionHistory_Model;
 import com.code.socialbook.backendapi.role.Role;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
@@ -42,6 +44,12 @@ public class User implements UserDetails, Principal {
     @ManyToMany(fetch = FetchType.EAGER)
     @JsonIgnore
     private List<Role> roles;
+
+    @OneToMany(mappedBy = "owner")
+    private List<Book_model> myBooks;
+
+    @OneToMany(mappedBy = "user")
+    private List<BookTransactionHistory_Model> histories;
 
     @CreatedDate
     @Column(nullable = false, updatable = false)
