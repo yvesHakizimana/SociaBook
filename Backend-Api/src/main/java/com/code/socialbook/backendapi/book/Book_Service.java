@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 
 import static com.code.socialbook.backendapi.book.BookSpecification.withOwnerId;
 
@@ -122,4 +123,68 @@ public class Book_Service {
         return bookId;
     }
 
+    public Integer updateArchivedStatus(Integer bookId, Authentication connectedUser) {
+        User user = ((User) connectedUser.getPrincipal());
+        var foundBook = bookRepository.findById(bookId).orElseThrow(() -> new EntityNotFoundException("No book found with this id: " + bookId));
+        if(!Objects.equals(foundBook.getOwner().getId(), user.getId())){
+            throw new OperationNotPermittedException("You can not update book archived status.");
+        }
+        foundBook.setArchived(!foundBook.isArchived());
+        bookRepository.save(foundBook);
+        return bookId;
+    }
+
+    public Integer borrowBook(Integer bookId, Authentication connectedUser) {
+        var foundBook = bookRepository.findById(bookId).orElseThrow(() -> new EntityNotFoundException("No book found with this id: " + bookId));
+        if(foundBook.isArchived() || !foundBook.isShareable()){
+            throw new OperationNotPermittedException("You can not borrow the book because it is archived or not shareable.");
+        }
+        User user = ((User) connectedUser.getPrincipal());
+        if(Objects.equals(foundBook.getOwner().getId(), user.getId())){
+            throw  new OperationNotPermittedException("You can not borrow the book you are the owner of.");
+        }
+        //Mechanism of borrowing the book.
+        final boolean isAlreadyBorrowed = transactionHistoryRepository.isAlreadyBorrowedByUser(bookId, user.getId());
+        if(isAlreadyBorrowed)
+            throw  new OperationNotPermittedException("The requested book is already borrowed.");
+
+        var bookTransactionHistory = BookTransactionHistory_Model.builder()
+                .user(user)
+                .book(foundBook)
+                .returned(false)
+                .returnApproved(false)
+                .build();
+        return transactionHistoryRepository.save(bookTransactionHistory).getId();
+    }
+
+    public Integer returnBorrowedBook(Integer bookId, Authentication connectedUser) {
+        var foundBook = bookRepository.findById(bookId).orElseThrow(() -> new EntityNotFoundException("No book found with this id: " + bookId));
+        if(foundBook.isArchived() || !foundBook.isShareable()){
+            throw new OperationNotPermittedException("You can not return the book because it is archived or not shareable.");
+        }
+        User user = ((User) connectedUser.getPrincipal());
+        if(Objects.equals(foundBook.getOwner().getId(), user.getId())){
+            throw  new OperationNotPermittedException("You can not return the book you are the owner of.");
+        }
+
+        BookTransactionHistory_Model bookTransactionHistory = transactionHistoryRepository.findByBookIdAndUserId(bookId, user.getId()).orElseThrow(() -> new OperationNotPermittedException("You didn't borrow this book."));
+
+        bookTransactionHistory.setReturned(true);
+        return transactionHistoryRepository.save(bookTransactionHistory).getId();
+    }
+
+    public Integer approveReturnedBorrowedBook(Integer bookId, Authentication connectedUser) {
+        var foundBook = bookRepository.findById(bookId).orElseThrow(() -> new EntityNotFoundException("No book found with this id: " + bookId));
+        if(foundBook.isArchived() || !foundBook.isShareable()){
+            throw new OperationNotPermittedException("You can not return/approve the book because it is archived or not shareable.");
+        }
+        User user = ((User) connectedUser.getPrincipal());
+        if(Objects.equals(foundBook.getOwner().getId(), user.getId())){
+            throw  new OperationNotPermittedException("You can not approve the return of  the book you are the owner of.");
+        }
+
+        BookTransactionHistory_Model bookTransactionHistory = transactionHistoryRepository.findByBookIdAndOwnerId(bookId, user.getId()).orElseThrow(() -> new OperationNotPermittedException("The book is not returned yet, so you can't approve its return"));
+        bookTransactionHistory.setReturnApproved(true);
+        return transactionHistoryRepository.save(bookTransactionHistory).getId();
+    }
 }
