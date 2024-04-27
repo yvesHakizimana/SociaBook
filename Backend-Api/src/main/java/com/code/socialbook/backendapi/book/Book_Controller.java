@@ -1,11 +1,14 @@
 package com.code.socialbook.backendapi.book;
 
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.apache.coyote.Response;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -94,5 +97,12 @@ public class Book_Controller {
         return ResponseEntity.ok(bookService.approveReturnedBorrowedBook(bookId, connectedUser));
     }
 
-
+    @PostMapping(value = "/cover/{book-id}", consumes = "multipart/form-data")
+    public ResponseEntity<?> uploadBookCoverPicture(@PathVariable("book-id") Integer bookId,
+                                                    @Parameter()
+                                                    @RequestPart("file")MultipartFile file,
+                                                    Authentication connectedUser){
+        bookService.uploadBookCoverPicture(file, connectedUser, bookId);
+        return ResponseEntity.accepted().build();
+    }
 }

@@ -1,6 +1,7 @@
 package com.code.socialbook.backendapi.book;
 
 import com.code.socialbook.backendapi.exceptions.OperationNotPermittedException;
+import com.code.socialbook.backendapi.filehandling.FileStorageService;
 import com.code.socialbook.backendapi.history.BookTransactionHistory_Model;
 import com.code.socialbook.backendapi.history.BookTransactionHistory_Repository;
 import com.code.socialbook.backendapi.user.User;
@@ -12,6 +13,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 import java.util.Objects;
@@ -27,6 +29,7 @@ public class Book_Service {
     private final BookMapper bookMapper;
     private final Book_Repository bookRepository;
     private final BookTransactionHistory_Repository transactionHistoryRepository;
+    private final FileStorageService fileStorageService;
 
     public Integer save(BookRequest_Dto request, Authentication connectedUser) {
         User user = ((User) connectedUser.getPrincipal());
@@ -186,5 +189,13 @@ public class Book_Service {
         BookTransactionHistory_Model bookTransactionHistory = transactionHistoryRepository.findByBookIdAndOwnerId(bookId, user.getId()).orElseThrow(() -> new OperationNotPermittedException("The book is not returned yet, so you can't approve its return"));
         bookTransactionHistory.setReturnApproved(true);
         return transactionHistoryRepository.save(bookTransactionHistory).getId();
+    }
+
+    public void uploadBookCoverPicture(MultipartFile file, Authentication connectedUser, Integer bookId) {
+        var foundBook = bookRepository.findById(bookId).orElseThrow(() -> new EntityNotFoundException("No book found with this id: " + bookId));
+        User user = ((User) connectedUser.getPrincipal());
+        var bookCover = fileStorageService.saveFile(file, user.getId());
+        foundBook.setBookCover(bookCover);
+        bookRepository.save(foundBook);
     }
 }
