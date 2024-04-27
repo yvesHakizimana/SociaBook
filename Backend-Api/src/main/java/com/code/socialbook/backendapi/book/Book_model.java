@@ -9,6 +9,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import lombok.experimental.SuperBuilder;
 import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedBy;
@@ -23,6 +24,7 @@ import java.util.List;
 @Table(name = "books")
 @AllArgsConstructor
 @NoArgsConstructor
+@SuperBuilder
 public class Book_model extends BaseEntity {
 
     private String title;
