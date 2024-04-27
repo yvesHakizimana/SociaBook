@@ -9,7 +9,6 @@ import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 
-import java.awt.print.Book;
 
 @EqualsAndHashCode(callSuper = true)
 @Entity
@@ -25,5 +24,4 @@ public class Feedback_Model extends BaseEntity {
     @ManyToOne()
     @JoinColumn(name = "book_id")
     private Book_model book;
-
 }
