@@ -17,4 +17,19 @@ public class BookMapper {
                 .shareable(request.shareable())
                 .build();
     }
+
+    public BookResponse toBookResponse(Book_model bookModel) {
+        return BookResponse.builder()
+                .id(bookModel.getId())
+                .title(bookModel.getTitle())
+                .authorName(bookModel.getAuthorName())
+                .synopsis(bookModel.getSynopsis())
+                .rate(bookModel.getRate())
+                .isbn(bookModel.getIsbn())
+                .archived(bookModel.isArchived())
+                .shareable(bookModel.isShareable())
+                .ownerName(bookModel.getOwner().fullName())
+//                .coverImage()
+                .build();
+    }
 }
