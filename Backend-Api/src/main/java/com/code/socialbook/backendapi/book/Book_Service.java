@@ -1,5 +1,6 @@
 package com.code.socialbook.backendapi.book;
 
+import com.code.socialbook.backendapi.exceptions.OperationNotPermittedException;
 import com.code.socialbook.backendapi.history.BookTransactionHistory_Model;
 import com.code.socialbook.backendapi.history.BookTransactionHistory_Repository;
 import com.code.socialbook.backendapi.user.User;
@@ -13,6 +14,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Objects;
 
 import static com.code.socialbook.backendapi.book.BookSpecification.withOwnerId;
 
@@ -108,4 +110,16 @@ public class Book_Service {
                 allReturnedBooks.isLast()
         );
     }
+
+    public Integer updateShareableStatus(Integer bookId, Authentication connectedUser) {
+        User user = ((User) connectedUser.getPrincipal());
+        var foundBook = bookRepository.findById(bookId).orElseThrow(() -> new EntityNotFoundException("No book found with this id: " + bookId));
+        if(!Objects.equals(foundBook.getOwner().getId(), user.getId())){
+            throw new OperationNotPermittedException("You can not update book shareable status.");
+        }
+        foundBook.setShareable(!foundBook.isShareable());
+        bookRepository.save(foundBook);
+        return bookId;
+    }
+
 }
