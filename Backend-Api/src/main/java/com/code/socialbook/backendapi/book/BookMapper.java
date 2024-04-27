@@ -1,5 +1,6 @@
 package com.code.socialbook.backendapi.book;
 
+import com.code.socialbook.backendapi.filehandling.FileUtils;
 import com.code.socialbook.backendapi.history.BookTransactionHistory_Model;
 import org.springframework.stereotype.Service;
 
@@ -30,7 +31,7 @@ public class BookMapper {
                 .archived(bookModel.isArchived())
                 .shareable(bookModel.isShareable())
                 .ownerName(bookModel.getOwner().fullName())
-//                .coverImage()
+                .coverImage(FileUtils.readFromFileLocation(bookModel.getBookCover()))
                 .build();
     }
 
