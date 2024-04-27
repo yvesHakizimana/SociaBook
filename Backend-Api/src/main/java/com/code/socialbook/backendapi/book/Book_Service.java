@@ -1,5 +1,7 @@
 package com.code.socialbook.backendapi.book;
 
+import com.code.socialbook.backendapi.history.BookTransactionHistory_Model;
+import com.code.socialbook.backendapi.history.BookTransactionHistory_Repository;
 import com.code.socialbook.backendapi.user.User;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
@@ -21,6 +23,7 @@ public class Book_Service {
 
     private final BookMapper bookMapper;
     private final Book_Repository bookRepository;
+    private final BookTransactionHistory_Repository transactionHistoryRepository;
 
     public Integer save(BookRequest_Dto request, Authentication connectedUser) {
         User user = ((User) connectedUser.getPrincipal());
@@ -68,5 +71,41 @@ public class Book_Service {
                 books.getTotalPages(),
                 books.isFirst(),
                 books.isLast());
+    }
+
+    public PageResponse<BorrowedBookResponse> findAllBorrowedBooks(int page, int size, Authentication connectedUser) {
+        User user = ((User) connectedUser.getPrincipal());
+        Pageable pageable = PageRequest.of(page, size, Sort.by("createdDate").descending());
+        Page<BookTransactionHistory_Model> allBorrowedBooks = transactionHistoryRepository.findAllBorrowedBooks(pageable, user.getId());
+        List<BorrowedBookResponse> borrowedBookResponses = allBorrowedBooks.stream()
+                .map(bookMapper::toBorrowedBookResponse)
+                .toList();
+        return new PageResponse<>(
+                borrowedBookResponses,
+                allBorrowedBooks.getNumber(),
+                allBorrowedBooks.getSize(),
+                allBorrowedBooks.getTotalElements(),
+                allBorrowedBooks.getTotalPages(),
+                allBorrowedBooks.isFirst(),
+                allBorrowedBooks.isLast()
+        );
+    }
+
+    public PageResponse<BorrowedBookResponse> findAllReturnedBooks(int page, int size, Authentication connectedUser) {
+        User user = ((User) connectedUser.getPrincipal());
+        Pageable pageable = PageRequest.of(page, size, Sort.by("createdDate").descending());
+        Page<BookTransactionHistory_Model> allReturnedBooks = transactionHistoryRepository.findAllReturnedBooks(pageable, user.getId());
+        List<BorrowedBookResponse> borrowedBookResponses = allReturnedBooks.stream()
+                .map(bookMapper::toBorrowedBookResponse)
+                .toList();
+        return new PageResponse<>(
+                borrowedBookResponses,
+                allReturnedBooks.getNumber(),
+                allReturnedBooks.getSize(),
+                allReturnedBooks.getTotalElements(),
+                allReturnedBooks.getTotalPages(),
+                allReturnedBooks.isFirst(),
+                allReturnedBooks.isLast()
+        );
     }
 }

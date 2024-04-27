@@ -1,5 +1,6 @@
 package com.code.socialbook.backendapi.book;
 
+import com.code.socialbook.backendapi.history.BookTransactionHistory_Model;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -30,6 +31,19 @@ public class BookMapper {
                 .shareable(bookModel.isShareable())
                 .ownerName(bookModel.getOwner().fullName())
 //                .coverImage()
+                .build();
+    }
+
+    public BorrowedBookResponse toBorrowedBookResponse(BookTransactionHistory_Model historyModel) {
+
+        return BorrowedBookResponse.builder()
+                .id(historyModel.getBook().getId())
+                .title(historyModel.getBook().getTitle())
+                .authorName(historyModel.getBook().getAuthorName())
+                .isbn(historyModel.getBook().getIsbn())
+                .rate(historyModel.getBook().getRate())
+                .returned(historyModel.isReturned())
+                .returnApproved(historyModel.isReturnApproved())
                 .build();
     }
 }
