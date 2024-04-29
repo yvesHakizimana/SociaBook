@@ -4,10 +4,12 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
 
-public interface BookTransactionHistory_Repository extends JpaRepository<BookTransactionHistory_Model, Integer> {
+@Repository
+public interface BookTransactionHistoryRepository extends JpaRepository<BookTransactionHistory_Model, Integer> {
     @Query("""
          SELECT history
          FROM BookTransactionHistory_Model history
@@ -28,7 +30,7 @@ public interface BookTransactionHistory_Repository extends JpaRepository<BookTra
             (COUNT(*) > 0) AS isBorrowed
             FROM BookTransactionHistory_Model historyModel
             WHERE historyModel.user.id = :userId
-            AND historyModel.book.id = :bookid
+            AND historyModel.book.id = :bookId
             AND historyModel.returnApproved = false
             """)
     boolean isAlreadyBorrowedByUser(Integer bookId, Integer userId);
@@ -37,7 +39,7 @@ public interface BookTransactionHistory_Repository extends JpaRepository<BookTra
         SELECT transaction
         FROM BookTransactionHistory_Model transaction
         WHERE transaction.user.id = :userId
-        AND transaction.book.id = :bookid
+        AND transaction.book.id = :bookId
         AND transaction.returned = false
         AND transaction.returnApproved = false
         """)
@@ -47,7 +49,7 @@ public interface BookTransactionHistory_Repository extends JpaRepository<BookTra
         SELECT transaction
         FROM BookTransactionHistory_Model transaction
         WHERE transaction.book.owner.id = :ownerId
-        AND transaction.book.id = :bookid
+        AND transaction.book.id = :bookId
         AND transaction.returned = true
         AND transaction.returnApproved = false
         """)

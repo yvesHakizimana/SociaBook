@@ -4,28 +4,27 @@ import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.apache.coyote.Response;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.util.List;
+;
 
 @RestController
 @RequestMapping("books")
 @RequiredArgsConstructor
 @Tag(name = "Book")
-public class Book_Controller {
+public class BookController {
 
-    private final Book_Service bookService;
+    private final BookService bookService;
 
     @PostMapping
     public ResponseEntity<Integer> saveBook(@RequestBody @Valid BookRequest_Dto request, Authentication connectedUser){
        return ResponseEntity.ok(bookService.save(request, connectedUser));
     }
 
-    @GetMapping("{book-id")
+    @GetMapping("{book-id}")
     public ResponseEntity<BookResponse> findBookById(@PathVariable("book-id") Integer bookId){
         return ResponseEntity.ok(bookService.findById(bookId));
     }

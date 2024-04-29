@@ -1,6 +1,6 @@
 package com.code.socialbook.backendapi.feedback;
 
-import com.code.socialbook.backendapi.book.Book_Repository;
+import com.code.socialbook.backendapi.book.BookRepository;
 import com.code.socialbook.backendapi.book.PageResponse;
 import com.code.socialbook.backendapi.exceptions.OperationNotPermittedException;
 import com.code.socialbook.backendapi.user.User;
@@ -18,7 +18,7 @@ import java.util.Objects;
 @Service
 @RequiredArgsConstructor
 public class FeedbackService {
-    private final Book_Repository bookRepository;
+    private final BookRepository bookRepository;
     private final FeedbackMapper feedbackMapper;
     private final FeedbackRepository feedbackRepository;
 

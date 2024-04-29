@@ -8,9 +8,9 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface Book_Repository extends JpaRepository<Book_model, Integer>, JpaSpecificationExecutor<Book_model> {
+public interface BookRepository extends JpaRepository<Book_model, Integer>, JpaSpecificationExecutor<Book_model> {
     @Query("""
-    SELECT book
+     SELECT book
      FROM Book_model book
      WHERE book.archived = false
      AND book.shareable = true

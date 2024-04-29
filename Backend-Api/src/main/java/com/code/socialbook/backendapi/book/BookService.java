@@ -3,7 +3,7 @@ package com.code.socialbook.backendapi.book;
 import com.code.socialbook.backendapi.exceptions.OperationNotPermittedException;
 import com.code.socialbook.backendapi.filehandling.FileStorageService;
 import com.code.socialbook.backendapi.history.BookTransactionHistory_Model;
-import com.code.socialbook.backendapi.history.BookTransactionHistory_Repository;
+import com.code.socialbook.backendapi.history.BookTransactionHistoryRepository;
 import com.code.socialbook.backendapi.user.User;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
@@ -17,18 +17,17 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 import java.util.Objects;
-import java.util.Optional;
 
 import static com.code.socialbook.backendapi.book.BookSpecification.withOwnerId;
 
 
 @Service
 @RequiredArgsConstructor
-public class Book_Service {
+public class BookService {
 
     private final BookMapper bookMapper;
-    private final Book_Repository bookRepository;
-    private final BookTransactionHistory_Repository transactionHistoryRepository;
+    private final BookRepository bookRepository;
+    private final BookTransactionHistoryRepository transactionHistoryRepository;
     private final FileStorageService fileStorageService;
 
     public Integer save(BookRequest_Dto request, Authentication connectedUser) {
