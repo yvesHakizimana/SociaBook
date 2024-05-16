@@ -1,8 +1,11 @@
 package com.code.socialbook.backendapi.exceptionHandler;
 
+import com.code.socialbook.backendapi.exceptions.InvalidTokenException;
 import com.code.socialbook.backendapi.exceptions.OperationNotPermittedException;
+import com.code.socialbook.backendapi.exceptions.TokenInvalidException;
 import io.jsonwebtoken.ExpiredJwtException;
 import jakarta.mail.MessagingException;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.DisabledException;
@@ -80,10 +83,38 @@ public class GlobalExceptionHandler {
                         .build());
     }
 
+    @ExceptionHandler(DataIntegrityViolationException.class)
+    public ResponseEntity<ExceptionResponse> handleException(DataIntegrityViolationException exp){
+        return ResponseEntity.status(BAD_REQUEST)
+                .body(ExceptionResponse.builder()
+                        .businessExceptionDescription("Email already exists try another.")
+                        .error(exp.getMessage())
+                        .build());
+    }
+
+
+
     @ExceptionHandler(OperationNotPermittedException.class)
     public ResponseEntity<ExceptionResponse> handleException(OperationNotPermittedException exp){
         return ResponseEntity.status(BAD_REQUEST)
                 .body(ExceptionResponse.builder()
+                        .error(exp.getMessage())
+                        .build());
+    }
+
+    @ExceptionHandler(InvalidTokenException.class)
+    public ResponseEntity<ExceptionResponse> handleException(InvalidTokenException exp){
+        return ResponseEntity.status(BAD_REQUEST)
+                .body(ExceptionResponse.builder()
+                        .error(exp.getMessage())
+                        .build());
+    }
+
+
+    @ExceptionHandler(TokenInvalidException.class)
+    public ResponseEntity<ExceptionResponse> handleException(TokenInvalidException exp){
+        return ResponseEntity.status(UNAUTHORIZED)
+                    .body(ExceptionResponse.builder()
                         .error(exp.getMessage())
                         .build());
     }
