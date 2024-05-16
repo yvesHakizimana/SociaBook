@@ -1,4 +1,7 @@
 package com.code.socialbook.backendapi.exceptions;
 
-public class InvalidTokenException {
+public class InvalidTokenException extends RuntimeException{
+    public InvalidTokenException(String message) {
+        super(message);
+    }
 }
