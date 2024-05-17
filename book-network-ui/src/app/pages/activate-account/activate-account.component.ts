@@ -12,7 +12,10 @@ export class ActivateAccountComponent {
   isOkay: boolean = true;
   submitted: boolean = false;
 
-  constructor(private router: Router, private authService: AuthenticationService) {}
+  constructor(
+    private router: Router,
+    private authService: AuthenticationService
+  ) {}
 
   onCodeCompleted(token: string) {
     this.confirmAccount(token);
@@ -25,13 +28,14 @@ export class ActivateAccountComponent {
   private confirmAccount(token: string) {
     this.authService.confirm({ token }).subscribe({
       next: () => {
-        this.message = "Your account has been successfully activated. Now you can proceed to login.";
+        this.message = "Your account has been successfully activated.\nNow you can proceed to login.";
         this.submitted = true;
+        this.isOkay = true;
       },
       error: (err) => {
         if (err.error) {
-          this.message = "The token has been expired or invalid.";
-          this.submitted = false;
+          this.message = JSON.parse(err.error)["businessExceptionDescription"];
+          this.submitted = true;
           this.isOkay = false;
         }
       }
