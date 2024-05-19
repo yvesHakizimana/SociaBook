@@ -1,8 +1,8 @@
 <div class="container-fluid card login-container">
     <h3 class="text-center">Login</h3>
     <hr>
-    <div class="alert alert-danger" role="alert" *ngIf="errorMessage.length">
-      <p *ngFor="let error of errorMessage">
+    <div class="alert alert-danger" role="alert" *ngIf="errorMessages.length">
+      <p *ngFor="let error of errorMessages">
         {{ error}}
       </p>
     </div>

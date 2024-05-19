@@ -4,7 +4,7 @@
     <h5 class="card-title fs-6 text-nowrap fw-bold mb-1"><i class="fa fa-solid fa-book"></i>&nbsp;{{book.title}}</h5>
     <h5 class="card-subtitle fs-6 text-secondary mb-1"><i class="fa fa-solid fa-user-check"></i>&nbsp;{{book.authorName}}</h5>
     <h6 class="card-subtitle fs-6 text-secondary mb-1"><i class="fas fa-code"></i>&nbsp;{{book.isbn}}</h6>
-    <h6 class="card-subtitle fs-6 text-secondary"><i class="fas fa-user"></i>&nbsp;{{book.isbn}}</h6>
+    <h6 class="card-subtitle fs-6 text-secondary"><i class="fas fa-user"></i>&nbsp;{{book.ownerName}}</h6>
     <hr>
     <p class="card-text">{{book.synopsis}}</p>
   </div>
@@ -15,7 +15,7 @@
         {{book.rate}}
       </span>
     </div>
-    <div class="d-flex gap-2" *nfIf="!manage">
+    <div class="d-flex gap-2" *ngIf="!manage">
       <i (click)="onShowDetails()" class="fa fa-circle-info text-primary"></i>
       <i (click)="onBorrow()" class="fa fa-list-check text-primary"></i>
       <i (click)="onAddToWaitingList()" class="fa fa-heart text-danger"></i>
