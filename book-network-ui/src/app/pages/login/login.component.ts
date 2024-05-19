@@ -19,10 +19,10 @@ export class LoginComponent {
   }
 
   authRequest : AuthenticationRequest = {email: "", password : ""};
-  errorMessage: string[] = [];
+  errorMessages: string[] = [];
 
   login() {
-    this.errorMessage = [];
+    this.errorMessages = [];
     this.authService.authenticate({
       body: this.authRequest
     }).subscribe(
@@ -32,11 +32,8 @@ export class LoginComponent {
           this.router.navigate(['books']);
         },
         error: (err) => {
-          if(err.error["validationErrors"]){
-            this.errorMessage = err.error["validationErrors"];
-          } else {
-            this.errorMessage.push(err.error.error);
-          }
+
+          console.log(err);
         }
       }
     )

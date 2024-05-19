@@ -1,43 +1,45 @@
 import { Component } from '@angular/core';
-import {RegistrationRequest} from "../../services/models/registration-request";
-import {Router} from "@angular/router";
-import {AuthenticationService} from "../../services/services/authentication.service";
+import { RegistrationRequest } from "../../services/models/registration-request";
+import { Router } from "@angular/router";
+import { AuthenticationService } from "../../services/services/authentication.service";
 
 @Component({
   selector: 'app-register',
   templateUrl: './register.component.html',
-  styleUrl: './register.component.scss'
+  styleUrls: ['./register.component.scss'] // Fixed here
 })
 export class RegisterComponent {
 
-  registerRequest : RegistrationRequest = {email: "", password: "", firstName: "", lastName: ""};
+  registerRequest: RegistrationRequest = { email: "", password: "", firstName: "", lastName: "" };
   errorMessages: string[] = [];
 
   constructor(
     private router: Router,
     private registerService: AuthenticationService
-              ) {
-  }
-  login(){
-    this.router.navigate(["login"])
+  ) { }
+
+  login() {
+    this.router.navigate(["login"]);
   }
 
-  register(){
+  register() {
     this.errorMessages = [];
     this.registerService.register({
-      body:  this.registerRequest
+      body: this.registerRequest
     }).subscribe({
-      next: (result) => {
+      next: () => {
         this.router.navigate(["activate-account"])
       },
       error: (err) => {
-        if(err.error["validationErrors"]){
+        if (err.error && err.error["validationErrors"]) {
           this.errorMessages = err.error["validationErrors"];
+        } else if (err.error && err.error["businessExceptionDescription"]) {
+          this.errorMessages.push(err.error["businessExceptionDescription"]);
         } else {
-          this.errorMessages.push(err.error.error);
+          this.errorMessages.push("An unexpected error occurred.");
+          console.log(err);
         }
       }
-
-    })
+    });
   }
 }
