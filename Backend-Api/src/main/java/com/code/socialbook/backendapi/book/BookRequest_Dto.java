@@ -4,17 +4,18 @@ import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 
 public record BookRequest_Dto(Integer id,
-                              @NotNull(message = "100")
-                              @NotEmpty(message =  "100")
+                              @NotNull(message = "Title cannot be null")
+                              @NotEmpty(message =  "Title cannot be empty")
                               String title,
-                              @NotNull(message = "101")
-                              @NotEmpty(message =  "101")
+                              @NotNull(message = "Author name cannot be null")
+                              @NotEmpty(message =  "Author name cannot be empty")
                               String authorName,
-                              @NotNull(message = "102")
-                              @NotEmpty(message =  "102")
+                              @NotNull(message = "ISBN cannot be null")
+                              @NotEmpty(message =  "ISBN cannot be empty")
                               String isbn,
-                              @NotNull(message = "103")
-                              @NotEmpty(message =  "103")
+                              @NotNull(message = "Synopsis cannot be null")
+                              @NotEmpty(message =  "Synopsis cannot be empty")
                               String synopsis,
                               boolean shareable) {
 }
+
