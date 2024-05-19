@@ -106,6 +106,7 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ExceptionResponse> handleException(InvalidTokenException exp){
         return ResponseEntity.status(BAD_REQUEST)
                 .body(ExceptionResponse.builder()
+                        .businessExceptionDescription("Invalid Token.")
                         .error(exp.getMessage())
                         .build());
     }
@@ -115,8 +116,9 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ExceptionResponse> handleException(TokenInvalidException exp){
         return ResponseEntity.status(UNAUTHORIZED)
                     .body(ExceptionResponse.builder()
-                        .error(exp.getMessage())
-                        .build());
+                            .businessExceptionDescription("Activation Token has expired, A new token has been sent to the same email")
+                            .error(exp.getMessage())
+                            .build());
     }
 
     @ExceptionHandler(Exception.class)

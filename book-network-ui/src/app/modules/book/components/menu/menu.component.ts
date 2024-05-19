@@ -1,4 +1,6 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, inject, OnInit} from '@angular/core';
+import {JwtHelperService} from "@auth0/angular-jwt";
+import {TokenService} from "../../../../services/token/token.service";
 
 @Component({
   selector: 'app-menu',
@@ -6,6 +8,10 @@ import {Component, OnInit} from '@angular/core';
   styleUrl: './menu.component.scss'
 })
 export class MenuComponent implements OnInit {
+
+  private tokenService = inject(TokenService);
+  username = "";
+
   ngOnInit(): void {
       const linkColor = document.querySelectorAll(".nav-link");
       linkColor.forEach(link => {
@@ -16,12 +22,18 @@ export class MenuComponent implements OnInit {
           linkColor.forEach(l => l.classList.remove("active"));
           link.classList.add("active");
         })
-
       })
+    this.getUsernameFromToken();
   }
 
 
   logout(){
+    localStorage.removeItem("token")
+    window.location.reload();
+  }
 
+  private getUsernameFromToken(){
+    const jwtHelperService = new JwtHelperService();
+    this.username =  jwtHelperService.decodeToken(this.tokenService.token)["sub"];
   }
 }
