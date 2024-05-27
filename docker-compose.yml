@@ -28,7 +28,7 @@ services:
       - bsn-api
   bsn-api:
     container_name: bsn-api
-    image: bsn/backend:1.0.0
+    image: bsn/backend:1.0.4
     ports:
       - "8090:8090"
     networks:
