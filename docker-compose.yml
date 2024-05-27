@@ -13,10 +13,29 @@ services:
       - postgres:/data/postgres
       - ./init-scripts:/docker-entrypoint-initdb.d
     ports:
-      - "5433:5432"
+      - "5434:5432"
     networks:
       - spring-demo
     restart: unless-stopped
+  bsn-ui:
+    container_name: bsn-ui
+    image: bsn/fronted:1.0.0
+    ports:
+      - "8080:80"
+    networks:
+      - spring-demo
+    depends_on:
+      - bsn-api
+  bsn-api:
+    container_name: bsn-api
+    image: bsn/backend:1.0.0
+    ports:
+      - "8090:8090"
+    networks:
+      - spring-demo
+    depends_on:
+      - postgres
+
   mail-dev:
     container_name: mail-dev-bsn
     image: maildev/maildev
