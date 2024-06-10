@@ -29,6 +29,6 @@ Contributions are welcome! If you have any suggestions or would like to contribu
 This project is licensed under the [MIT License](LICENSE).
 
 ## Contact
-For any inquiries or support, please contact [Your Name] at [your.email@example.com].
+For any inquiries or support, please contact Yves HAKIZIMANA at yvhakizimana123@gmail.com.
 
 Let's build a thriving community of book lovers together! Happy reading! 📚✨
