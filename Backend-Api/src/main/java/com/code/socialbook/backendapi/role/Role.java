@@ -17,9 +17,9 @@ import java.util.List;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@Entity
-@EntityListeners(AuditingEntityListener.class)
-@Table(name = "role")
+//@Entity
+//@EntityListeners(AuditingEntityListener.class)
+//@Table(name = "role")
 public class Role {
     @Id
     @GeneratedValue

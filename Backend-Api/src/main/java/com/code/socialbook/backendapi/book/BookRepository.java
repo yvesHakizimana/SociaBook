@@ -14,7 +14,7 @@ public interface BookRepository extends JpaRepository<Book_model, Integer>, JpaS
      FROM Book_model book
      WHERE book.archived = false
      AND book.shareable = true
-     AND book.owner.id != :userId
+     AND book.createdBy != :userId
 """)
-    Page<Book_model> findAllDisplayableBooks(Pageable pageable, Integer userId);
+    Page<Book_model> findAllDisplayableBooks(Pageable pageable, String userId);
 }

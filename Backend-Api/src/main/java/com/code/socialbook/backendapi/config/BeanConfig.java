@@ -26,7 +26,7 @@ import static org.springframework.http.HttpHeaders.*;
 @RequiredArgsConstructor
 public class BeanConfig {
 
-    private final UserDetailsService userDetailsService;
+   /* private final UserDetailsService userDetailsService;
 
 
     @Bean
@@ -41,16 +41,17 @@ public class BeanConfig {
     public AuthenticationManager authenticationManager(AuthenticationConfiguration authConfig) throws Exception {
         return authConfig.getAuthenticationManager();
     }
-
-    @Bean
-    public AuditorAware<Integer> auditorAware(){
-        return new AppAuditAware();
-    }
-
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
+    }*/
+
+
+    @Bean
+    public AuditorAware<String> auditorAware(){
+        return new AppAuditAware();
     }
+
 
     @Bean
     public CorsFilter corsFilter() {

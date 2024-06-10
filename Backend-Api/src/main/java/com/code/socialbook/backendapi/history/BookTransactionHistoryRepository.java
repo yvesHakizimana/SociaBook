@@ -13,45 +13,45 @@ public interface BookTransactionHistoryRepository extends JpaRepository<BookTran
     @Query("""
          SELECT history
          FROM BookTransactionHistory_Model history
-         WHERE history.user.id = :userId
+         WHERE history.userId = :userId
         """)
-    Page<BookTransactionHistory_Model> findAllBorrowedBooks(Pageable pageable, Integer userId);
+    Page<BookTransactionHistory_Model> findAllBorrowedBooks(Pageable pageable, String  userId);
 
 
     @Query("""
          SELECT history
          FROM BookTransactionHistory_Model history
-         WHERE history.book.owner.id = :userId
+         WHERE history.book.createdBy = :userId
 """)
-    Page<BookTransactionHistory_Model> findAllReturnedBooks(Pageable pageable, Integer userId);
+    Page<BookTransactionHistory_Model> findAllReturnedBooks(Pageable pageable, String  userId);
 
     @Query("""
             SELECT
             (COUNT(*) > 0) AS isBorrowed
             FROM BookTransactionHistory_Model historyModel
-            WHERE historyModel.user.id = :userId
+            WHERE historyModel.userId = :userId
             AND historyModel.book.id = :bookId
             AND historyModel.returnApproved = false
             """)
-    boolean isAlreadyBorrowedByUser(Integer bookId, Integer userId);
+    boolean isAlreadyBorrowedByUser(Integer bookId, String userId);
 
     @Query("""
         SELECT transaction
         FROM BookTransactionHistory_Model transaction
-        WHERE transaction.user.id = :userId
+        WHERE transaction.userId = :userId
         AND transaction.book.id = :bookId
         AND transaction.returned = false
         AND transaction.returnApproved = false
         """)
-    Optional<BookTransactionHistory_Model> findByBookIdAndUserId(Integer bookId, Integer userId);
+    Optional<BookTransactionHistory_Model> findByBookIdAndUserId(Integer bookId, String userId);
 
     @Query("""
         SELECT transaction
         FROM BookTransactionHistory_Model transaction
-        WHERE transaction.book.owner.id = :ownerId
+        WHERE transaction.book.createdBy = :ownerId
         AND transaction.book.id = :bookId
         AND transaction.returned = true
         AND transaction.returnApproved = false
         """)
-    Optional<BookTransactionHistory_Model> findByBookIdAndOwnerId(Integer bookId, Integer ownerId);
+    Optional<BookTransactionHistory_Model> findByBookIdAndOwnerId(Integer bookId, String ownerId);
 }

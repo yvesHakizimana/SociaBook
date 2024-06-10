@@ -18,14 +18,14 @@ public class BackendApiApplication {
         SpringApplication.run(BackendApiApplication.class, args);
     }
 
-    @Bean
+    /*@Bean
     public CommandLineRunner commandLineRunner(RoleRepository roleRepository) {
         return args -> {
             if(roleRepository.findByName("USER").isEmpty()){
                 roleRepository.save(Role.builder().name("USER").build());
             }
         };
-    }
+    }*/
 
 
 }

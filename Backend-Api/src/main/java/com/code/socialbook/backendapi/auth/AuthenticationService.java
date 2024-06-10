@@ -26,11 +26,11 @@ import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
 
-@Service
+//@Service
 @RequiredArgsConstructor
 public class AuthenticationService {
 
-    private static final Logger logger = LoggerFactory.getLogger(AuthenticationService.class);
+    /*private static final Logger logger = LoggerFactory.getLogger(AuthenticationService.class);
 
     private final RoleRepository roleRepository;
     private final PasswordEncoder passwordEncoder;
@@ -130,5 +130,5 @@ public class AuthenticationService {
             activationCode.append(characters.charAt(randomIndex));
         }
         return activationCode.toString();
-    }
+    }*/
 }

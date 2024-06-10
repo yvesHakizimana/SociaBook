@@ -30,7 +30,7 @@ public class FeedbackService {
         }
 
         User user = ((User) connectedUser.getPrincipal());
-        if(Objects.equals(foundBook.getOwner().getId(), user.getId())){
+        if(Objects.equals(foundBook.getCreatedBy(), connectedUser.getName())){
             throw new OperationNotPermittedException("You cannot give a feedback as you are the owner of the book.");
         }
 
